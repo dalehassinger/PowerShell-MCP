@@ -4,7 +4,6 @@ A PowerShell MCP Server to integrate with **Claude Desktop**.
 
 All the code is 100% PowerShell.  
 
----
 
 ## Overview:
 
@@ -14,7 +13,6 @@ Special thanks to **Don Horrox** and **Amos Clerizier** for their collaborationâ
 
 Thanks as well to **Cosmin** and **Willie**, who joined the team on Hackathon night and contributed valuable feedback and ideas.  
 
----
 
 ## Goals:
 
@@ -23,7 +21,6 @@ Thanks as well to **Cosmin** and **Willie**, who joined the team on Hackathon ni
 - **First-class prompting** for **VMware Cloud Foundation (VCF)** products (e.g., vCenter, NSX, vSAN, Aria Operations).
 - **On the fly** reports without generating any code to create the results  
 
----
 
 ## Getting Started:
 
@@ -46,6 +43,7 @@ To connect this PowerShell MCP Server with Claude Desktop, include a configurati
 
 Example json file in the code.  
 
+
 ## Project Structure:
 
 To keep the MCP Server script clean, all **Tools** (PowerShell functions) are stored in a dedicated `tools` subfolder.  
@@ -58,13 +56,12 @@ Sample **Prompts** will be located in the `prompts` subfolder.
 Example **Prompt Results** will be located in the `Prompt-Results` subfolder.  
 
 
----
-
 ## Feedback:
 
 If you use this project as a starting point or adapt ideas for your own environment, Iâ€™d love to hear about it.  
 Please consider sharing your feedback, suggestions, or improvements.  
 Your input helps make this project better for everyone.  
+
 
 ## PowerShell Modules used with the MCP code and Tools:  
 
@@ -72,6 +69,7 @@ Your input helps make this project better for everyone.
 * ImportExcel  
 * powershell-yaml  
 * Posh-SSH  
+
 
 ## Tools:
 
@@ -85,3 +83,4 @@ In the `tools` folder are functions that I used in my Lab to prompt against the 
 * Create MD Tables
 * Create html reports in the style of VCF Operations
 * If you can script it, you can prompt it!  
+
