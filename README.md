@@ -1,13 +1,33 @@
 # PowerShell-MCP
-PowerShell MCP to use with Claude Desktop
+
+A PowerShell MCP Server to integrate with **Claude Desktop**.
 
 ---
 
-This PowerShell MCP Server Project started at the 2025 VMware Explore Hackathon.  
-Thanks to Don and Amos for sharing ideas, creating code and Partipating on my Hackathon Team. I enjoy the friendhip we devolped the past two years at the Hackathons.  
+## Overview
+
+This project was originally created during the **2025 VMware Explore Hackathon**.  
+
+Special thanks to **Don** and **Amos** for their collaboration—sharing ideas, writing code, and being great teammates. The past two years of Hackathons together have been as much about building friendships as building projects.  
 
 ---
 
-Sample Claude Desktop LOcal MCP Servers file:  
-claude_desktop_config.json  
+## Getting Started
+
+To connect this PowerShell MCP Server with Claude Desktop, include a configuration entry similar to the example below:
+
+```json
+// claude_desktop_config.json
+{
+  "mcpServers": {
+    "powershell-mcp": {
+      "command": "pwsh",
+      "args": [
+        "-File",
+        "path/to/PowerShell-MCP.ps1"
+      ]
+    }
+  }
+}
+```
 
