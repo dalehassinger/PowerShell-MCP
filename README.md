@@ -37,3 +37,5 @@ To keep the MCP Server script clean, all **Tools** (PowerShell functions) are st
 When the server runs, it automatically loads every tool defined in that folder.  
 
 All **configuration details** required for the tools to connect to their respective products are stored in the `mcp-config.yaml` file, located in the `config` subfolder.
+
+Sample **Prompts** will be located in the `prompts` subfolder.
