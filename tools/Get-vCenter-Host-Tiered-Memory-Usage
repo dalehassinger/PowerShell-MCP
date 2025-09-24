@@ -1,0 +1,137 @@
+function Get-vCenter-Host-Tiered-Memory-Usage {
+    <#
+    .SYNOPSIS
+      Collect tiered memory usage for all VMs across ESXi hosts and return JSON.
+
+      Do not use if RVTools is in the Prompt
+    .DESCRIPTION
+      Connects to vCenter, enumerates ESXi hosts, then SSHes to each host to fetch:
+        - VM process list (to map VMX Cartel IDs to VM display names)
+        - memstats vmtier-stats (tiered memory usage per VM in MB)
+      Produces a JSON array of objects with Host, Name, MemSizeMB, ActiveMB, Tier0-RAM, Tier1-NVMe.
+      vCLS system VMs are excluded.
+    .REQUIREMENTS
+      - VMware PowerCLI
+      - sshpass available in PATH on the machine running this function
+    .OUTPUTS
+      System.String (JSON)
+    .EXAMPLE
+      Get-vCenter-Host-Tiered-Memory-Usage
+    #>
+    [CmdletBinding()]
+    param()
+
+    # Resolve vCenter connection info (prefer YAML config if present)
+    $vcServer   = if ($cfg.vCenter.server)   { $cfg.vCenter.server }   else { "vcsa8x.vcrocs.local" }
+    $vcUsername = if ($cfg.vCenter.username) { $cfg.vCenter.username } else { "administrator@vcrocs.local" }
+    $vcPassword = if ($cfg.vCenter.password) { $cfg.vCenter.password } else { "VMware1!" }
+
+    try {
+        # Connect to vCenter
+        Connect-VIServer -Server $vcServer -User $vcUsername -Password $vcPassword -Protocol https -Force -ErrorAction Stop | Out-Null
+
+        # Validate sshpass availability (required for ESXi SSH)
+        if (-not (Get-Command sshpass -ErrorAction SilentlyContinue)) {
+            throw "sshpass is not installed or not in PATH. Install sshpass and try again."
+        }
+
+        # Enumerate ESXi hosts
+        $esxiHosts = Get-VMHost -ErrorAction Stop
+
+        # Aggregate results for all hosts
+        $combinedResults = @()
+
+        foreach ($esxiHost in $esxiHosts) {
+            $server   = $esxiHost.Name
+            $username = "root"        # TODO: Prefer secure storage or YAML config
+            $password = "VMware1!"    # TODO: Prefer secure storage or YAML config
+
+            Write-Verbose "Querying host $server for VM list and tiered memory stats"
+
+            # 1) Build VMX CartelID -> DisplayName map from esxcli (CSV)
+            $vmCommand = "esxcli --formatter csv vm process list"
+            $args_vm = @(
+                "-p", $password, "ssh",
+                "-o","ConnectTimeout=10",
+                "-o","PreferredAuthentications=password",
+                "-o","PubkeyAuthentication=no",
+                "-o","StrictHostKeyChecking=no",
+                "-o","LogLevel=QUIET",
+                "$username@$server",
+                $vmCommand
+            )
+            $vmCsv = & sshpass @args_vm 2>$null
+            $vmNameMap = @{}
+            if ($vmCsv) {
+                try {
+                    $vmRows = $vmCsv | ConvertFrom-Csv
+                    foreach ($row in $vmRows) {
+                        # Try common id/display column names with fallbacks
+                        $id = $row.VMXCartelID; if (-not $id) { $id = $row.CartelID }
+                        if (-not $id) { $id = $row.WorldID }
+                        $name = $row.DisplayName; if (-not $name) { $name = $row.Name }
+                        if ($id -and $name) { $vmNameMap[$id] = $name }
+                    }
+                } catch {
+                    Write-Verbose "Failed to parse VM CSV for $($server): $($_.Exception.Message)"
+                }
+            }
+
+            # 2) Query tiered memory stats
+            $memCommand = 'memstats -r vmtier-stats -u mb -s name:memSize:active:tier0Consumed:tier1Consumed'
+            $args_mem = @(
+                "-p", $password, "ssh",
+                "-o","ConnectTimeout=10",
+                "-o","PreferredAuthentications=password",
+                "-o","PubkeyAuthentication=no",
+                "-o","StrictHostKeyChecking=no",
+                "-o","LogLevel=QUIET",
+                "$username@$server",
+                $memCommand
+            )
+            $memOutput = & sshpass @args_mem 2>$null
+            if (-not $memOutput) { continue }
+
+            # Normalize and filter lines
+            $lines = $memOutput -split "`n" |
+                     ForEach-Object { $_.Trim() } |
+                     Where-Object { $_ -and $_ -notmatch '^-{2,}|Total|Start|No\.|VIRTUAL|Unit|Selected' }
+
+            # Regex shape: "vm.<cartelId>  <memSize>  <active>  <tier0>  <tier1>"
+            $pattern = '^(?<name>\S+)\s+(?<memSize>\d+)\s+(?<active>\d+)\s+(?<tier0Consumed>\d+)\s+(?<tier1Consumed>\d+)$'
+
+            foreach ($line in $lines) {
+                if ($line -match $pattern) {
+                    $nameKey = ($matches['name'] -replace '^vm\.', '')
+                    $display = if ($vmNameMap.ContainsKey($nameKey)) { $vmNameMap[$nameKey] } else { $nameKey }
+
+                    # Exclude system VMs
+                    if ($display -like 'vCLS-*') { continue }
+
+                    $combinedResults += [pscustomobject]@{
+                        Host         = $server
+                        Name         = $display
+                        MemSizeMB    = [int]$matches['memSize']
+                        ActiveMB     = [int]$matches['active']
+                        'Tier0-RAM'  = [int]$matches['tier0Consumed']
+                        'Tier1-NVMe' = [int]$matches['tier1Consumed']
+                    }
+                }
+            }
+        } # end foreach host
+
+        # Emit JSON
+        $combinedResults | ConvertTo-Json -Depth 4
+    }
+    catch {
+        # Return compact JSON error
+        [pscustomobject]@{
+            Status  = 'Error'
+            Message = $_.Exception.Message
+        } | ConvertTo-Json -Compress
+    }
+    finally {
+        # Ensure VI disconnect
+        try { Disconnect-VIServer -Server * -Confirm:$false | Out-Null } catch {}
+    }
+} # End Function
