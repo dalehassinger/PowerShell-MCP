@@ -12,7 +12,7 @@ This project was originally created during the **2025 VMware Explore Hackathon**
 
 Special thanks to **Don Horrox** and **Amos Clerizier** for their collaboration—sharing ideas, writing code, and being great teammates. The past two years of Hackathons together have been as much about building friendships as building projects.  
 
-Thanks as well to Cosmin and Willie, who joined the team on Hackathon night and contributed valuable feedback and ideas.  
+Thanks as well to **Cosmin** and **Willie**, who joined the team on Hackathon night and contributed valuable feedback and ideas.  
 
 ---
 
