@@ -42,6 +42,8 @@ To connect this PowerShell MCP Server with Claude Desktop, include a configurati
 }
 ```
 
+Example json file in the code.  
+
 ## Project Structure:
 
 To keep the MCP Server script clean, all **Tools** (PowerShell functions) are stored in a dedicated `tools` subfolder.  
