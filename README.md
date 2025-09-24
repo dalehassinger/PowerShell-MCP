@@ -19,7 +19,7 @@ Special thanks to **Don Horrox** and **Amos Clerizier** for their collaborationâ
 - **100% PowerShell** implementation â€” no external runtimes.
 - **High reusability** of existing **PowerCLI** scripts with minimal changes (ideally just imports/parameter tweaks/return results as json).
 - **First-class prompting** for **VMware Cloud Foundation (VCF)** products (e.g., vCenter, NSX, vSAN, Aria Operations).
-- **On the fly** reports without generating any code to create the reults  
+- **On the fly** reports without generating any code to create the results  
 
 ---
 
