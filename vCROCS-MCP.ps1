@@ -455,21 +455,3 @@ while ($true) {
 }
 
 $stderr.WriteLine("PowerShell MCP Server stopped")
-
-# Claude Setup
-<#
-{
-  "mcpServers": {
-    "vCROCS-mcp": {
-      "command": "pwsh",
-      "args": [
-        "-NoLogo",
-        "-NonInteractive",
-        "-File",
-        "/Users/dalehassinger/Documents/GitHub/PowerShell-MCP/vCROCS-MCP.ps1"
-      ],
-      "env": {}
-    }
-  }
-}
-#>
