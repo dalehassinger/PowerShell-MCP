@@ -71,3 +71,15 @@ Your input helps make this project better for everyone.
 * powershell-yaml  
 * Posh-SSH  
 
+## Tools:
+
+In the `tools` folder are functions that I used in my Lab to prompt against the following:
+
+* VMware vCenter
+* VCF Operations
+* Network Switch
+* Create DNS Records
+* Send email
+* Create MD Tables
+* Create html reports in the style of VCF Operations
+* If you can script it, you can prompt it!  
