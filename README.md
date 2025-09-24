@@ -39,3 +39,12 @@ When the server runs, it automatically loads every tool (*.ps1 file) defined in 
 All **configuration details** required for the tools to connect to their respective products are stored in the `mcp-config.yaml` file, located in the `config` subfolder.
 
 Sample **Prompts** will be located in the `prompts` subfolder.
+
+---
+
+## Feedback
+
+If you use this project as a starting point or adapt ideas for your own environment, I’d love to hear about it.  
+Please consider sharing your feedback, suggestions, or improvements.  
+Your input helps make this project better for everyone.  
+
