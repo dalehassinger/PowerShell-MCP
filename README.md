@@ -31,3 +31,9 @@ To connect this PowerShell MCP Server with Claude Desktop, include a configurati
 }
 ```
 
+## Project Structure
+
+To keep the MCP Server script clean, all **Tools** (PowerShell functions) are stored in a dedicated `tools` subfolder.  
+When the server runs, it automatically loads every tool defined in that folder.  
+
+All **configuration details** required for the tools to connect to their respective products are stored in the `mcp-config.yaml` file, located in the `config` subfolder.
