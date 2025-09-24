@@ -76,8 +76,6 @@ try {
     Write-Host "Failed to parse YAML configuration: $_" -ForegroundColor Red
     exit 1
 }
-# $cfg
-
 
 # -------------------------------------------
 # Dynamic Tool Loading from tools/ subfolder
@@ -232,30 +230,6 @@ function Get-ToolList {
     }
     return ,$tools
 }
-
-# Pick which functions to expose
-<#
-$FunctionsToExpose = @(
-    'Get-HostUptime',
-    'Get-All-vCenter-VMs',
-    'Get-vCenter-VM-Stats',
-    'Get-Network-Switch-Stats',
-    'Send-Email',
-    'Get-vCenter-Host-Health',
-    'Get-vCenter-Host-Tiered-Memory-Usage',
-    'Create-DNS-ARecord',
-    'Get-RVTools-Zombie-VMDK',
-    'Get-RVTools-vInfo',
-    'Get-RVTools-vCPU',
-    'Get-RVTools-vMemory',
-    'Get-RVTools-vDisk',
-    'Get-RVTools-vPartition',
-    'Get-RVTools-vTools',
-    'Save-HTML-Report'
-    # Add your PowerCLI / ops functions here, e.g. 'Get-VM', 'Get-ClusterStatus', etc.
-)
-#>
-#$FunctionsToExpose
 
 $ToolIndex = @{}
 (Get-ToolList -FunctionNames $FunctionsToExpose) | ForEach-Object {
