@@ -55,9 +55,16 @@ Sample **Prompts** will be located in the `prompts` subfolder.
 
 ---
 
-## Feedback
+## Feedback:
 
 If you use this project as a starting point or adapt ideas for your own environment, I’d love to hear about it.  
 Please consider sharing your feedback, suggestions, or improvements.  
 Your input helps make this project better for everyone.  
+
+## PowerShell Modules used with the MCP code and Tools:  
+
+* PowerCLI  
+* ImportExcel  
+* powershell-yaml  
+* Posh-SSH  
 
