@@ -1,18 +1,28 @@
-# PowerShell-MCP
+# PowerShell-MCP:
 
 A PowerShell MCP Server to integrate with **Claude Desktop**.
 
+All the code is 100% PowerShell.  
+
 ---
 
-## Overview
+## Overview:
 
 This project was originally created during the **2025 VMware Explore Hackathon**.  
 
-Special thanks to **Don** and **Amos** for their collaboration—sharing ideas, writing code, and being great teammates. The past two years of Hackathons together have been as much about building friendships as building projects.  
+Special thanks to **Don Horrox** and **Amos Clerizier** for their collaboration—sharing ideas, writing code, and being great teammates. The past two years of Hackathons together have been as much about building friendships as building projects.  
 
 ---
 
-## Getting Started
+## Goals:
+
+- **100% PowerShell** implementation — no external runtimes.
+- **High reusability** of existing **PowerCLI** scripts with minimal changes (ideally just imports/parameter tweaks/return results as json).
+- **First-class prompting** for **VMware Cloud Foundation (VCF)** products (e.g., vCenter, NSX, vSAN, Aria Operations).
+
+---
+
+## Getting Started:
 
 To connect this PowerShell MCP Server with Claude Desktop, include a configuration entry similar to the example below:
 
@@ -31,7 +41,7 @@ To connect this PowerShell MCP Server with Claude Desktop, include a configurati
 }
 ```
 
-## Project Structure
+## Project Structure:
 
 To keep the MCP Server script clean, all **Tools** (PowerShell functions) are stored in a dedicated `tools` subfolder.  
 When the server runs, it automatically loads every tool (*.ps1 file) defined in that folder.  
