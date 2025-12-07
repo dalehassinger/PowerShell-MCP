@@ -1,6 +1,6 @@
 # PowerShell-MCP:
 
-A PowerShell MCP Server to integrate with **Claude Desktop**.
+A PowerShell MCP Server to integrate with **Claude Desktop**. TEST
 
 All the code is 100% PowerShell.  
 
